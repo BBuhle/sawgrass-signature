@@ -64,22 +64,40 @@
   <p class="sub">Fill it in, copy it, paste into Outlook once. Nothing gets edited inside Outlook.</p>
 
   <div class="steps">
-    <h3>How to use it</h3>
+    <h3>How to set up your signature</h3>
     <ol>
-      <li>Fill in your details and untick anything you don't want.</li>
-      <li>Click <strong>Copy signature</strong>.</li>
-      <li>Outlook: <strong>File &rarr; Options &rarr; Mail &rarr; Signatures</strong>. New Outlook or web: <strong>Settings &rarr; Mail &rarr; Compose and reply</strong>.</li>
-      <li>Create a new signature, paste, save. Don't retype anything in there. Editing inside Outlook is what resizes the logo and breaks the spacing.</li>
+      <li>In the <strong>Your details</strong> section below, type your name into the <strong>Name</strong> field.</li>
+      <li>Type your job title into the <strong>Title</strong> field.</li>
+      <li>Type your region into the <strong>Region</strong> field.</li>
+      <li>Type your work email into the <strong>Email</strong> field.</li>
+      <li>Type your phone number into the <strong>Phone</strong> field.</li>
+      <li>Untick any line you do not want to appear.</li>
+      <li>If you are promoting a show, tick <strong>Include a promo banner</strong> and fill in the show details.</li>
+      <li>Look at the <strong>Preview</strong> and check everything is correct.</li>
+      <li>Select the <strong>Copy signature</strong> button.</li>
+      <li>Open Outlook.</li>
+      <li>Go to your signature settings.
+        <ol style="margin-top:4px;">
+          <li>Classic Outlook: select <strong>File</strong>, then <strong>Options</strong>, then <strong>Mail</strong>, then <strong>Signatures</strong>.</li>
+          <li>New Outlook or Outlook on the web: select <strong>Settings</strong>, then <strong>Mail</strong>, then <strong>Compose and reply</strong>.</li>
+        </ol>
+      </li>
+      <li>Select <strong>New</strong> to create a signature, and give it a name.</li>
+      <li>Click inside the large editing box.</li>
+      <li>Paste with <strong>Ctrl+V</strong>, or <strong>Cmd+V</strong> on a Mac.</li>
+      <li>Select <strong>Save</strong>.</li>
+      <li>Send yourself a test email to check it looks right.</li>
     </ol>
+    <p style="margin:12px 0 0;"><strong>Do not retype or edit anything once it is in Outlook.</strong> Outlook rewrites the layout when you edit inside it, which resizes the logo and breaks the spacing. If something needs changing, change it on this page and paste again.</p>
   </div>
 
   <div class="panel">
     <h2>Your details</h2>
     <div class="grid">
-      <div><label for="fName">Name</label><input type="text" id="fName" value="Brett Allyn"></div>
-      <div><label for="fTitle">Title</label><input type="text" id="fTitle" value="Content Marketing Manager"></div>
-      <div><label for="fRegion">Region</label><input type="text" id="fRegion" value="North America"></div>
-      <div><label for="fEmail">Email</label><input type="text" id="fEmail" value="brett@sawgrassink.com"></div>
+      <div><label for="fName">Name</label><input type="text" id="fName" value="First Last"></div>
+      <div><label for="fTitle">Title</label><input type="text" id="fTitle" value="Job Title"></div>
+      <div><label for="fRegion">Region</label><input type="text" id="fRegion" value="Region"></div>
+      <div><label for="fEmail">Email</label><input type="text" id="fEmail" value="name@sawgrassink.com"></div>
       <div><label for="fPhone">Phone</label><input type="text" id="fPhone" value="+1 843-000-0000"></div>
     </div>
     <div class="row">
@@ -89,6 +107,28 @@
       <label><input type="checkbox" id="tPhone" checked> Phone</label>
       <label><input type="checkbox" id="tWeb" checked> Website</label>
       <label><input type="checkbox" id="tSocial" checked> Social icons</label>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Promo banner</h2>
+    <div class="row" style="margin:0 0 16px;padding:0;border:0;">
+      <label><input type="checkbox" id="tPromo"> Include a promo banner</label>
+    </div>
+    <div id="promoFields" style="display:none;">
+      <div class="grid">
+        <div><label for="pShow">Show name</label><input type="text" id="pShow" value="Printing United"></div>
+        <div><label for="pBooth">Booth number</label><input type="text" id="pBooth" value="C2591"></div>
+        <div><label for="pDates">Dates</label><input type="text" id="pDates" value="Sept. 23-25, 2026"></div>
+        <div><label for="pLoc">Location</label><input type="text" id="pLoc" value="Las Vegas, Nevada, USA"></div>
+        <div><label for="pCode">Promo code</label><input type="text" id="pCode" value="712881"></div>
+        <div><label for="pUrl">Button link</label><input type="text" id="pUrl" value="https://www.printingunited.com"></div>
+      </div>
+      <div class="row" style="margin-top:16px;">
+        <label><input type="radio" name="btnText" value="Register Now" checked> Register Now</label>
+        <label><input type="radio" name="btnText" value="Learn More"> Learn More</label>
+      </div>
+      <p style="font-size:13px;color:var(--muted);margin:14px 0 0;">Leave any field blank to drop that line. No promo code, no promo code line. No booth number, the headline just names the show. The banner is solid orange so it renders the same in every email client. Dark mode clients will invert it, which is expected.</p>
     </div>
   </div>
 
@@ -108,7 +148,7 @@
   var BASE = 'https://cdn.jsdelivr.net/gh/BBuhle/sawgrass-signature@main/';
   var SANS = "'BentonSans','Benton Sans','Helvetica Neue',Helvetica,Arial,sans-serif";
   var BOOK = "'BentonSans Book','BentonSans Book Regular','BentonSans','Benton Sans','Helvetica Neue',Helvetica,Arial,sans-serif";
-  var PINK = '#e04584', GREY = '#888b95';
+  var PINK = '#e04584', GREY = '#888b95', ORANGE = '#ff7f39';
 
   var Z = { mark:112, rule:155, name:20, nameLh:25, sub:15, subLh:20, body:13, bodyLh:18,
             icon:18, gapL:18, gapR:20, sp1:6, cb:4, sp2:4, ig:4, it:5, nb:2 };
@@ -195,8 +235,8 @@
             + 'style="border-collapse:collapse;"><tr>' + cells + '</tr></table></td></tr>';
     }
 
-    return '<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;"><tr>'
-      + '<td valign="middle" style="padding:0 ' + z.gapL + 'px 0 0;">'
+    return '<table cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="border-collapse:collapse;background-color:#ffffff;color:' + GREY + ';"><tr>'
+      + '<td valign="middle" bgcolor="#ffffff" style="padding:0 ' + z.gapL + 'px 0 0;background-color:#ffffff;">'
       + '<a href="https://www.sawgrassink.com" style="text-decoration:none;border:0;">'
       + '<img src="' + BASE + 'w-mark.png" width="' + z.mark + '" height="' + z.mark
       + '" alt="Sawgrass" style="display:block;border:0;outline:none;width:' + z.mark
@@ -204,14 +244,102 @@
       + '<td valign="middle" width="4" bgcolor="' + PINK + '" height="' + z.rule
       + '" style="width:4px;height:' + z.rule + 'px;background-color:' + PINK
       + ';font-size:0;line-height:0;">&nbsp;</td>'
-      + '<td valign="middle" style="padding:0 0 0 ' + z.gapR + 'px;">'
-      + '<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">'
+      + '<td valign="middle" width="300" bgcolor="#ffffff" style="width:300px;padding:0 0 0 ' + z.gapR + 'px;background-color:#ffffff;">'
+      + '<table cellpadding="0" cellspacing="0" border="0" width="300" bgcolor="#ffffff" style="border-collapse:collapse;width:300px;background-color:#ffffff;color:' + GREY + ';">'
       + rows + '</table></td></tr></table>';
+  }
+
+  function buildPromo(){
+    if (!document.getElementById('tPromo').checked) return '';
+    var v = function(id){ return document.getElementById(id).value.trim(); };
+    var show = v('pShow'), booth = v('pBooth'), dates = v('pDates'),
+        loc = v('pLoc'), code = v('pCode'), url = v('pUrl');
+
+    var btn = 'Register Now';
+    var radios = document.getElementsByName('btnText');
+    for (var r = 0; r < radios.length; r++) if (radios[r].checked) btn = radios[r].value;
+
+    var where = '';
+    if (dates && loc) where = esc(dates) + ' &bull; ' + esc(loc);
+    else if (dates)   where = esc(dates);
+    else if (loc)     where = esc(loc);
+
+    // how many text lines are showing, so the block can scale to suit
+    var n = 0;
+    if (show)  n++;
+    if (booth) n++;
+    if (where) n++;
+    if (code)  n++;
+
+    var big = n >= 3;
+    var pad     = big ? '16px 28px' : '13px 28px';
+    var btnPad  = big ? '8px 20px'  : '6px 16px';
+    var btnFont = big ? 13 : 12;
+    var gapAbove = big ? 10 : 7;
+
+    var lines = '';
+    var last = function(){ return (code || where || booth || show); };
+
+    if (show) {
+      lines += '<tr><td align="center" style="font-family:' + SANS
+        + ';font-size:17px;font-weight:bold;color:#ffffff;line-height:22px;padding:0 0 2px 0;">'
+        + 'Come See Us At ' + esc(show) + '</td></tr>';
+    }
+    if (booth) {
+      lines += '<tr><td align="center" style="font-family:' + SANS
+        + ';font-size:15px;font-weight:bold;color:#ffffff;line-height:20px;padding:0 0 4px 0;">'
+        + 'Booth #' + esc(booth) + '</td></tr>';
+    }
+    if (where) {
+      lines += '<tr><td align="center" style="font-family:' + BOOK
+        + ';font-size:12px;color:#ffffff;line-height:17px;padding:0 0 4px 0;">' + where + '</td></tr>';
+    }
+    if (code) {
+      lines += '<tr><td align="center" style="font-family:' + SANS
+        + ';font-size:14px;font-weight:bold;color:#ffffff;line-height:19px;padding:0 0 4px 0;">'
+        + 'Use Promo Code ' + esc(code) + '</td></tr>';
+    }
+
+    if (url) {
+      lines += '<tr><td align="center" style="padding:' + (n ? gapAbove : 0) + 'px 0 0 0;">'
+        + '<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:separate;"><tr>'
+        + '<td bgcolor="' + PINK + '" style="background-color:' + PINK
+        + ';border-radius:6px;padding:' + btnPad + ';">'
+        + '<a href="' + esc(url) + '" style="font-family:' + SANS
+        + ';font-size:' + btnFont + 'px;font-weight:bold;color:#ffffff;'
+        + 'text-decoration:none;display:inline-block;">'
+        + '<span style="color:#ffffff;text-decoration:none;">' + esc(btn) + '</span></a>'
+        + '</td></tr></table></td></tr>';
+    }
+
+    if (!lines) return '';
+
+    return '<table cellpadding="0" cellspacing="0" border="0" width="100%" '
+      + 'style="border-collapse:collapse;width:100%;"><tr>'
+      + '<td align="center" valign="middle" bgcolor="' + ORANGE + '" '
+      + 'style="background-color:' + ORANGE + ';border-radius:10px;padding:' + pad + ';">'
+      + '<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">'
+      + lines + '</table>'
+      + '</td></tr></table>';
+  }
+
+  function buildAll(){
+    var sig = build();
+    var promo = buildPromo();
+    if (!promo) return sig;
+    return '<table cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" '
+      + 'style="border-collapse:collapse;background-color:#ffffff;color:' + GREY + ';">'
+      + '<tr><td bgcolor="#ffffff" style="padding:0;background-color:#ffffff;color:' + GREY + ';">'
+      + sig + '</td></tr>'
+      + '<tr><td bgcolor="#ffffff" style="padding:18px 0 0 0;background-color:#ffffff;color:' + GREY + ';">'
+      + promo + '</td></tr></table>';
   }
 
   var out = document.getElementById('out');
   function render(){
-    out.innerHTML = build();
+    document.getElementById('promoFields').style.display =
+      document.getElementById('tPromo').checked ? 'block' : 'none';
+    out.innerHTML = buildAll();
   }
 
   var inputs = document.querySelectorAll('input');
@@ -223,7 +351,7 @@
 
   var btn = document.getElementById('copyBtn'), hint = document.getElementById('hint');
   btn.addEventListener('click', function(){
-    var html = build();
+    var html = buildAll();
     function ok(){
       hint.textContent = 'Copied. Paste into Outlook.';
       btn.textContent = 'Copied'; btn.classList.add('done');
