@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sawgrass Signature Builder</title>
+<style>
+  :root{
+    --pink:#e04584;
+    --ink:#1c1a19;
+    --body:#4e4945;
+    --muted:#8a817a;
+    --rule:#e6dfd6;
+    --wash:#fbf6f3;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--wash);color:var(--body);
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+    font-size:15px;line-height:1.6;padding:32px 20px 80px}
+  .wrap{max-width:900px;margin:0 auto}
+
+  h1{font-size:26px;color:var(--ink);margin:0 0 4px;letter-spacing:-.01em}
+  .sub{color:var(--muted);margin:0 0 26px;font-size:14px}
+
+  .panel{background:#fff;border:1px solid var(--rule);border-radius:10px;padding:24px;margin-bottom:22px}
+  .panel h2{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
+    margin:0 0 16px;font-weight:700}
+
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:640px){.grid{grid-template-columns:1fr}}
+  label{display:block;font-size:12px;font-weight:600;color:var(--ink);margin-bottom:4px}
+  input[type=text]{width:100%;padding:9px 11px;border:1px solid var(--rule);border-radius:6px;
+    font-size:15px;font-family:inherit;color:var(--ink);background:#fff}
+  input[type=text]:focus{outline:none;border-color:var(--pink)}
+
+  .row{display:flex;gap:22px;flex-wrap:wrap;margin-top:18px;padding-top:16px;border-top:1px solid var(--rule)}
+  .row label{display:flex;align-items:center;gap:7px;font-size:14px;font-weight:500;
+    color:var(--body);cursor:pointer;margin:0}
+  .row input{width:16px;height:16px;accent-color:var(--pink);cursor:pointer}
+
+
+  .preview{background:#fff;border:1px solid var(--rule);border-radius:10px;padding:34px 28px;
+    margin-bottom:16px;overflow-x:auto}
+
+  .btn{display:inline-block;background:linear-gradient(100deg,#e04584,#ff7f39);color:#fff;border:0;
+    font-size:15px;font-weight:700;padding:13px 26px;border-radius:999px;cursor:pointer;
+    font-family:inherit}
+  .btn.done{background:#2f6b4f}
+  .btnrow{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .hint{font-size:13px;color:var(--muted)}
+
+  .steps{background:#fff8e6;border:1px solid #ecdcb4;border-left:4px solid #d99a2b;
+    border-radius:8px;padding:18px 22px;font-size:14px;margin-bottom:22px}
+  .steps h3{margin:0 0 8px;font-size:14px;color:var(--ink)}
+  .steps ol{margin:0;padding-left:20px}
+  .steps li{margin-bottom:6px}
+  .steps strong{color:var(--ink)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Sawgrass Signature Builder</h1>
+  <p class="sub">Fill it in, copy it, paste into Outlook once. Nothing gets edited inside Outlook.</p>
+
+  <div class="steps">
+    <h3>How to use it</h3>
+    <ol>
+      <li>Fill in your details and untick anything you don't want.</li>
+      <li>Click <strong>Copy signature</strong>.</li>
+      <li>Outlook: <strong>File &rarr; Options &rarr; Mail &rarr; Signatures</strong>. New Outlook or web: <strong>Settings &rarr; Mail &rarr; Compose and reply</strong>.</li>
+      <li>Create a new signature, paste, save. Don't retype anything in there. Editing inside Outlook is what resizes the logo and breaks the spacing.</li>
+    </ol>
+  </div>
+
+  <div class="panel">
+    <h2>Your details</h2>
+    <div class="grid">
+      <div><label for="fName">Name</label><input type="text" id="fName" value="Brett Allyn"></div>
+      <div><label for="fTitle">Title</label><input type="text" id="fTitle" value="Content Marketing Manager"></div>
+      <div><label for="fRegion">Region</label><input type="text" id="fRegion" value="North America"></div>
+      <div><label for="fEmail">Email</label><input type="text" id="fEmail" value="brett@sawgrassink.com"></div>
+      <div><label for="fPhone">Phone</label><input type="text" id="fPhone" value="+1 843-000-0000"></div>
+    </div>
+    <div class="row">
+      <label><input type="checkbox" id="tTitle" checked> Title</label>
+      <label><input type="checkbox" id="tRegion" checked> Region</label>
+      <label><input type="checkbox" id="tEmail" checked> Email</label>
+      <label><input type="checkbox" id="tPhone" checked> Phone</label>
+      <label><input type="checkbox" id="tWeb" checked> Website</label>
+      <label><input type="checkbox" id="tSocial" checked> Social icons</label>
+    </div>
+  </div>
+
+  <div style="margin-bottom:22px">
+    <h2 style="font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 12px;font-weight:700;padding:0 4px;">Preview</h2>
+    <div class="preview"><div id="out"></div></div>
+    <div class="btnrow">
+      <button class="btn" id="copyBtn">Copy signature</button>
+      <span class="hint" id="hint">Copies with formatting, ready to paste.</span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  var BASE = 'https://cdn.jsdelivr.net/gh/BBuhle/sawgrass-signature@main/';
+  var SANS = "'BentonSans','Benton Sans','Helvetica Neue',Helvetica,Arial,sans-serif";
+  var BOOK = "'BentonSans Book','BentonSans Book Regular','BentonSans','Benton Sans','Helvetica Neue',Helvetica,Arial,sans-serif";
+  var PINK = '#e04584', GREY = '#888b95';
+
+  var Z = { mark:112, rule:155, name:20, nameLh:25, sub:15, subLh:20, body:13, bodyLh:18,
+            icon:18, gapL:18, gapR:20, sp1:6, cb:4, sp2:4, ig:4, it:5, nb:2 };
+
+
+  var SOCIAL = [
+    ['facebook.png','Facebook','https://www.facebook.com/SawgrassInk'],
+    ['instagram.png','Instagram','https://www.instagram.com/sawgrassink/'],
+    ['pinterest.png','Pinterest','https://www.pinterest.com/sawgrassink/'],
+    ['tiktok.png','TikTok','https://www.tiktok.com/@sawgrassink'],
+    ['youtube.png','YouTube','https://www.youtube.com/@SawgrassInk'],
+    ['linkedin.png','LinkedIn','https://www.linkedin.com/company/sawgrasstechnologies/']
+  ];
+
+  function esc(s){
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;')
+                    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function contactRow(z, icon, inner){
+    return '<tr><td style="padding:0 0 ' + z.cb + 'px 0;">'
+      + '<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;"><tr>'
+      + '<td valign="middle" width="' + z.icon + '" style="padding:0 ' + z.it + 'px 0 0;">'
+      + '<img src="' + BASE + icon + '" width="' + z.icon + '" height="' + z.icon + '" alt="" '
+      + 'style="display:block;border:0;outline:none;width:' + z.icon + 'px;height:' + z.icon + 'px;"></td>'
+      + '<td valign="middle" style="font-family:' + BOOK + ';font-size:' + z.body
+      + 'px;color:' + GREY + ';line-height:' + z.bodyLh + 'px;">' + inner + '</td>'
+      + '</tr></table></td></tr>';
+  }
+
+  function build(){
+    var z = Z;
+    var v = function(id){ return document.getElementById(id).value.trim(); };
+    var on = function(id){ return document.getElementById(id).checked; };
+
+    var name = v('fName'), title = v('fTitle'), region = v('fRegion'),
+        email = v('fEmail'), phone = v('fPhone');
+
+    var rows = '<tr><td style="font-family:' + SANS + ';font-size:' + z.name
+      + 'px;font-weight:bold;color:' + PINK + ';line-height:' + z.nameLh
+      + 'px;padding:0 0 ' + z.nb + 'px 0;white-space:nowrap;">' + esc(name) + '</td></tr>';
+
+    if (on('tTitle') && title) {
+      rows += '<tr><td style="font-family:' + BOOK + ';font-size:' + z.sub + 'px;color:' + PINK
+            + ';line-height:' + z.subLh + 'px;padding:0;">' + esc(title) + '</td></tr>';
+    }
+    if (on('tRegion') && region) {
+      rows += '<tr><td style="font-family:' + BOOK + ';font-size:' + z.sub + 'px;color:' + PINK
+            + ';line-height:' + z.subLh + 'px;padding:0;">' + esc(region) + '</td></tr>';
+    }
+
+    var hasContact = (on('tEmail') && email) || (on('tPhone') && phone) || on('tWeb');
+    if (hasContact) {
+      rows += '<tr><td height="' + z.sp1 + '" style="height:' + z.sp1 + 'px;font-size:0;line-height:0;">&nbsp;</td></tr>';
+    }
+    if (on('tEmail') && email) {
+      rows += contactRow(z, 'mail.png', '<a href="mailto:' + esc(email)
+            + '" style="color:' + GREY + ';text-decoration:none;"><span style="color:'
+            + GREY + ';text-decoration:none;">' + esc(email) + '</span></a>');
+    }
+    if (on('tPhone') && phone) rows += contactRow(z, 'phone.png',
+      '<span style="color:' + GREY + ';">' + esc(phone) + '</span>');
+    if (on('tWeb')) {
+      rows += contactRow(z, 'globe.png', '<a href="https://www.sawgrassink.com" style="color:'
+            + GREY + ';text-decoration:none;"><span style="color:' + GREY
+            + ';text-decoration:none;">www.sawgrassink.com</span></a>');
+    }
+
+    if (on('tSocial')) {
+      if (hasContact) {
+        rows += '<tr><td height="' + z.sp2 + '" style="height:' + z.sp2 + 'px;font-size:0;line-height:0;">&nbsp;</td></tr>';
+      }
+      var cells = '';
+      for (var i = 0; i < SOCIAL.length; i++) {
+        var s = SOCIAL[i];
+        var pad = (i === SOCIAL.length - 1) ? '0' : '0 ' + z.ig + 'px 0 0';
+        cells += '<td style="padding:' + pad + ';"><a href="' + s[2]
+               + '" style="text-decoration:none;border:0;"><img src="' + BASE + s[0]
+               + '" width="' + z.icon + '" height="' + z.icon + '" alt="' + s[1]
+               + '" style="display:block;border:0;outline:none;width:' + z.icon
+               + 'px;height:' + z.icon + 'px;"></a></td>';
+      }
+      rows += '<tr><td style="padding:0;"><table cellpadding="0" cellspacing="0" border="0" '
+            + 'style="border-collapse:collapse;"><tr>' + cells + '</tr></table></td></tr>';
+    }
+
+    return '<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;"><tr>'
+      + '<td valign="middle" style="padding:0 ' + z.gapL + 'px 0 0;">'
+      + '<a href="https://www.sawgrassink.com" style="text-decoration:none;border:0;">'
+      + '<img src="' + BASE + 'w-mark.png" width="' + z.mark + '" height="' + z.mark
+      + '" alt="Sawgrass" style="display:block;border:0;outline:none;width:' + z.mark
+      + 'px;height:' + z.mark + 'px;"></a></td>'
+      + '<td valign="middle" width="4" bgcolor="' + PINK + '" height="' + z.rule
+      + '" style="width:4px;height:' + z.rule + 'px;background-color:' + PINK
+      + ';font-size:0;line-height:0;">&nbsp;</td>'
+      + '<td valign="middle" style="padding:0 0 0 ' + z.gapR + 'px;">'
+      + '<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">'
+      + rows + '</table></td></tr></table>';
+  }
+
+  var out = document.getElementById('out');
+  function render(){
+    out.innerHTML = build();
+  }
+
+  var inputs = document.querySelectorAll('input');
+  for (var k = 0; k < inputs.length; k++) {
+    inputs[k].addEventListener('input', render);
+    inputs[k].addEventListener('change', render);
+  }
+  render();
+
+  var btn = document.getElementById('copyBtn'), hint = document.getElementById('hint');
+  btn.addEventListener('click', function(){
+    var html = build();
+    function ok(){
+      hint.textContent = 'Copied. Paste into Outlook.';
+      btn.textContent = 'Copied'; btn.classList.add('done');
+      setTimeout(function(){ btn.textContent = 'Copy signature'; btn.classList.remove('done'); }, 2200);
+    }
+    function fallback(){
+      var r = document.createRange(); r.selectNodeContents(out);
+      var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+      try { document.execCommand('copy'); sel.removeAllRanges(); ok(); }
+      catch(e){ hint.textContent = 'Copy failed. Select the preview and press Ctrl+C.'; }
+    }
+    if (navigator.clipboard && window.ClipboardItem) {
+      try {
+        navigator.clipboard.write([new ClipboardItem({
+          'text/html': new Blob([html], {type:'text/html'}),
+          'text/plain': new Blob([out.innerText], {type:'text/plain'})
+        })]).then(ok).catch(fallback);
+      } catch(e){ fallback(); }
+    } else { fallback(); }
+  });
+})();
+</script>
+</body>
+</html>
