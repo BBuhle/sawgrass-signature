@@ -71,7 +71,7 @@
       <li>Type your region into the <strong>Region</strong> field.</li>
       <li>Type your work email into the <strong>Email</strong> field.</li>
       <li>Type your phone number into the <strong>Phone</strong> field.</li>
-      <li>Untick any line you do not want to appear.</li>
+      <li>Untick Region, Email or Phone if you do not want that line to appear. Title, website and social icons always show.</li>
       <li>If you are promoting a show, tick <strong>Include a promo banner</strong> and fill in the show details.</li>
       <li>Look at the <strong>Preview</strong> and check everything is correct.</li>
       <li>Select the <strong>Copy signature</strong> button.</li>
@@ -101,12 +101,9 @@
       <div><label for="fPhone">Phone</label><input type="text" id="fPhone" value="+1 843-000-0000"></div>
     </div>
     <div class="row">
-      <label><input type="checkbox" id="tTitle" checked> Title</label>
       <label><input type="checkbox" id="tRegion" checked> Region</label>
       <label><input type="checkbox" id="tEmail" checked> Email</label>
       <label><input type="checkbox" id="tPhone" checked> Phone</label>
-      <label><input type="checkbox" id="tWeb" checked> Website</label>
-      <label><input type="checkbox" id="tSocial" checked> Social icons</label>
     </div>
   </div>
 
@@ -191,7 +188,7 @@
       + 'px;font-weight:bold;color:' + PINK + ';line-height:' + z.nameLh
       + 'px;padding:0 0 ' + z.nb + 'px 0;white-space:nowrap;">' + esc(name) + '</td></tr>';
 
-    if (on('tTitle') && title) {
+    if (title) {
       rows += '<tr><td style="font-family:' + BOOK + ';font-size:' + z.sub + 'px;color:' + PINK
             + ';line-height:' + z.subLh + 'px;padding:0;">' + esc(title) + '</td></tr>';
     }
@@ -200,7 +197,7 @@
             + ';line-height:' + z.subLh + 'px;padding:0;">' + esc(region) + '</td></tr>';
     }
 
-    var hasContact = (on('tEmail') && email) || (on('tPhone') && phone) || on('tWeb');
+    var hasContact = true;
     if (hasContact) {
       rows += '<tr><td height="' + z.sp1 + '" style="height:' + z.sp1 + 'px;font-size:0;line-height:0;">&nbsp;</td></tr>';
     }
@@ -211,13 +208,13 @@
     }
     if (on('tPhone') && phone) rows += contactRow(z, 'phone.png',
       '<span style="color:' + GREY + ';">' + esc(phone) + '</span>');
-    if (on('tWeb')) {
+    {
       rows += contactRow(z, 'globe.png', '<a href="https://www.sawgrassink.com" style="color:'
             + GREY + ';text-decoration:none;"><span style="color:' + GREY
             + ';text-decoration:none;">www.sawgrassink.com</span></a>');
     }
 
-    if (on('tSocial')) {
+    {
       if (hasContact) {
         rows += '<tr><td height="' + z.sp2 + '" style="height:' + z.sp2 + 'px;font-size:0;line-height:0;">&nbsp;</td></tr>';
       }
