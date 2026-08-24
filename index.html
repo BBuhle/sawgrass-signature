@@ -147,6 +147,10 @@
   var BOOK = "'BentonSans Book','BentonSans Book Regular','BentonSans','Benton Sans','Helvetica Neue',Helvetica,Arial,sans-serif";
   var PINK = '#e04584', GREY = '#888b95', ORANGE = '#ff7f39';
 
+  // Native pixel dimensions of w-mark.png. Height is always derived from
+  // width using this ratio so the mark can never be squashed.
+  var MARK_W = 171, MARK_H = 124;
+
   var Z = { mark:112, rule:155, name:20, nameLh:25, sub:15, subLh:20, body:13, bodyLh:18,
             icon:18, gapL:18, gapR:20, sp1:6, cb:4, sp2:4, ig:4, it:5, nb:2 };
 
@@ -178,6 +182,8 @@
 
   function build(){
     var z = Z;
+    var markW = z.mark;
+    var markH = Math.round(z.mark * MARK_H / MARK_W);
     var v = function(id){ return document.getElementById(id).value.trim(); };
     var on = function(id){ return document.getElementById(id).checked; };
 
@@ -233,11 +239,12 @@
     }
 
     return '<table cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="border-collapse:collapse;background-color:#ffffff;color:' + GREY + ';"><tr>'
-      + '<td valign="middle" bgcolor="#ffffff" style="padding:0 ' + z.gapL + 'px 0 0;background-color:#ffffff;">'
+      + '<td valign="middle" width="' + markW + '" bgcolor="#ffffff" style="width:' + markW
+      + 'px;min-width:' + markW + 'px;padding:0 ' + z.gapL + 'px 0 0;background-color:#ffffff;">'
       + '<a href="https://www.sawgrassink.com" style="text-decoration:none;border:0;">'
-      + '<img src="' + BASE + 'w-mark.png" width="' + z.mark + '" height="' + z.mark
-      + '" alt="Sawgrass" style="display:block;border:0;outline:none;width:' + z.mark
-      + 'px;height:' + z.mark + 'px;"></a></td>'
+      + '<img src="' + BASE + 'w-mark.png" width="' + markW + '" height="' + markH
+      + '" alt="Sawgrass" style="display:block;border:0;outline:none;width:' + markW
+      + 'px;min-width:' + markW + 'px;height:' + markH + 'px;"></a></td>'
       + '<td valign="middle" width="4" bgcolor="' + PINK + '" height="' + z.rule
       + '" style="width:4px;height:' + z.rule + 'px;background-color:' + PINK
       + ';font-size:0;line-height:0;">&nbsp;</td>'
@@ -275,7 +282,6 @@
     var gapAbove = big ? 10 : 7;
 
     var lines = '';
-    var last = function(){ return (code || where || booth || show); };
 
     if (show) {
       lines += '<tr><td align="center" style="font-family:' + SANS
