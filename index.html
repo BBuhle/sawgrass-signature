@@ -194,17 +194,26 @@
     var name = v('fName'), title = v('fTitle'), region = v('fRegion'),
         email = v('fEmail'), phone = v('fPhone');
 
+    // Colour is declared on the <td> AND on an inner <span> wrapping the text.
+    // Outlook restructures pasted signature markup into its own nested divs and
+    // leaves colour behind on the cell, so the text ends up inheriting from a
+    // parent it can no longer see and falls back to the client default (white in
+    // dark mode). The span travels with the text node, so there is always a
+    // colour declaration sitting directly on the text.
     var rows = '<tr><td style="font-family:' + SANS + ';font-size:' + z.name
       + 'px;font-weight:bold;color:' + PINK + ';line-height:' + z.nameLh
-      + 'px;padding:0 0 ' + z.nb + 'px 0;white-space:nowrap;">' + esc(name) + '</td></tr>';
+      + 'px;padding:0 0 ' + z.nb + 'px 0;white-space:nowrap;">'
+      + '<span style="color:' + PINK + ';">' + esc(name) + '</span></td></tr>';
 
     if (title) {
       rows += '<tr><td style="font-family:' + BOOK + ';font-size:' + z.sub + 'px;color:' + PINK
-            + ';line-height:' + z.subLh + 'px;padding:0;">' + esc(title) + '</td></tr>';
+            + ';line-height:' + z.subLh + 'px;padding:0;">'
+            + '<span style="color:' + PINK + ';">' + esc(title) + '</span></td></tr>';
     }
     if (on('tRegion') && region) {
       rows += '<tr><td style="font-family:' + BOOK + ';font-size:' + z.sub + 'px;color:' + PINK
-            + ';line-height:' + z.subLh + 'px;padding:0;">' + esc(region) + '</td></tr>';
+            + ';line-height:' + z.subLh + 'px;padding:0;">'
+            + '<span style="color:' + PINK + ';">' + esc(region) + '</span></td></tr>';
     }
 
     var hasContact = true;
@@ -290,21 +299,22 @@
     if (show) {
       lines += '<tr><td align="center" style="font-family:' + SANS
         + ';font-size:17px;font-weight:bold;color:#ffffff;line-height:22px;padding:0 0 2px 0;">'
-        + 'Come See Us At ' + esc(show) + '</td></tr>';
+        + '<span style="color:#ffffff;">Come See Us At ' + esc(show) + '</span></td></tr>';
     }
     if (booth) {
       lines += '<tr><td align="center" style="font-family:' + SANS
         + ';font-size:15px;font-weight:bold;color:#ffffff;line-height:20px;padding:0 0 4px 0;">'
-        + 'Booth #' + esc(booth) + '</td></tr>';
+        + '<span style="color:#ffffff;">Booth #' + esc(booth) + '</span></td></tr>';
     }
     if (where) {
       lines += '<tr><td align="center" style="font-family:' + BOOK
-        + ';font-size:12px;color:#ffffff;line-height:17px;padding:0 0 4px 0;">' + where + '</td></tr>';
+        + ';font-size:12px;color:#ffffff;line-height:17px;padding:0 0 4px 0;">'
+        + '<span style="color:#ffffff;">' + where + '</span></td></tr>';
     }
     if (code) {
       lines += '<tr><td align="center" style="font-family:' + SANS
         + ';font-size:14px;font-weight:bold;color:#ffffff;line-height:19px;padding:0 0 4px 0;">'
-        + 'Use Promo Code ' + esc(code) + '</td></tr>';
+        + '<span style="color:#ffffff;">Use Promo Code ' + esc(code) + '</span></td></tr>';
     }
 
     if (url) {
