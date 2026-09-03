@@ -251,9 +251,14 @@
             + 'style="border-collapse:collapse;"><tr>' + cells + '</tr></table></td></tr>';
     }
 
-    return '<table cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="border-collapse:collapse;background-color:#ffffff;color:' + GREY + ';"><tr>'
-      + '<td valign="middle" width="' + markW + '" bgcolor="#ffffff" style="width:' + markW
-      + 'px;min-width:' + markW + 'px;padding:0 ' + z.gapL + 'px 0 0;background-color:#ffffff;">'
+    // No background is declared anywhere in the signature. An explicit
+    // background is the strongest signal for Outlook dark mode to invert a
+    // region, and once it inverts it also recalculates the text colours inside.
+    // The mark is pink and orange so it reads on light and dark panes alike.
+    // The promo banner keeps its solid orange fill by design.
+    return '<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;color:' + GREY + ';"><tr>'
+      + '<td valign="middle" width="' + markW + '" style="width:' + markW
+      + 'px;min-width:' + markW + 'px;padding:0 ' + z.gapL + 'px 0 0;">'
       + '<a href="https://www.sawgrassink.com" style="text-decoration:none;border:0;">'
       + '<img src="' + BASE + 'w-mark.png" width="' + markW + '"' + markHAttr
       + ' alt="Sawgrass" style="display:block;border:0;outline:none;width:' + markW
@@ -261,8 +266,8 @@
       + '<td valign="middle" width="4" bgcolor="' + PINK + '" height="' + z.rule
       + '" style="width:4px;height:' + z.rule + 'px;background-color:' + PINK
       + ';font-size:0;line-height:0;">&nbsp;</td>'
-      + '<td valign="middle" width="300" bgcolor="#ffffff" style="width:300px;padding:0 0 0 ' + z.gapR + 'px;background-color:#ffffff;">'
-      + '<table cellpadding="0" cellspacing="0" border="0" width="300" bgcolor="#ffffff" style="border-collapse:collapse;width:300px;background-color:#ffffff;color:' + GREY + ';">'
+      + '<td valign="middle" width="300" style="width:300px;padding:0 0 0 ' + z.gapR + 'px;">'
+      + '<table cellpadding="0" cellspacing="0" border="0" width="300" style="border-collapse:collapse;width:300px;color:' + GREY + ';">'
       + rows + '</table></td></tr></table>';
   }
 
@@ -344,11 +349,11 @@
     var sig = build();
     var promo = buildPromo();
     if (!promo) return sig;
-    return '<table cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" '
-      + 'style="border-collapse:collapse;background-color:#ffffff;color:' + GREY + ';">'
-      + '<tr><td bgcolor="#ffffff" style="padding:0;background-color:#ffffff;color:' + GREY + ';">'
+    return '<table cellpadding="0" cellspacing="0" border="0" '
+      + 'style="border-collapse:collapse;color:' + GREY + ';">'
+      + '<tr><td style="padding:0;color:' + GREY + ';">'
       + sig + '</td></tr>'
-      + '<tr><td bgcolor="#ffffff" style="padding:18px 0 0 0;background-color:#ffffff;color:' + GREY + ';">'
+      + '<tr><td style="padding:18px 0 0 0;color:' + GREY + ';">'
       + promo + '</td></tr></table>';
   }
 
