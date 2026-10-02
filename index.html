@@ -171,6 +171,17 @@
                     .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
 
+  // Lock text colour against Outlook-on-Windows dark mode. CSS colour on a
+  // <span> was being dropped when Outlook's paste cleanup collapsed the
+  // markup, leaving the text "automatic" so it followed the theme (white in
+  // dark, black in light). The <font color> attribute maps to Word's run
+  // colour and survives the paste; the inline !important fights the dark-mode
+  // recolour in clients that keep the CSS. Belt and suspenders.
+  function paint(color, text){
+    return '<font color="' + color + '">'
+         + '<span style="color:' + color + ' !important;">' + text + '</span></font>';
+  }
+
   function contactRow(z, icon, inner){
     return '<tr><td style="padding:0 0 ' + z.cb + 'px 0;">'
       + '<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;"><tr>'
@@ -178,7 +189,7 @@
       + '<img src="' + BASE + icon + '" width="' + z.icon + '" height="' + z.icon + '" alt="" '
       + 'style="display:block;border:0;outline:none;width:' + z.icon + 'px;height:' + z.icon + 'px;"></td>'
       + '<td valign="middle" style="font-family:' + BOOK + ';font-size:' + z.body
-      + 'px;color:' + GREY + ';line-height:' + z.bodyLh + 'px;">' + inner + '</td>'
+      + 'px;color:' + GREY + ' !important;line-height:' + z.bodyLh + 'px;">' + inner + '</td>'
       + '</tr></table></td></tr>';
   }
 
@@ -201,19 +212,19 @@
     // dark mode). The span travels with the text node, so there is always a
     // colour declaration sitting directly on the text.
     var rows = '<tr><td style="font-family:' + SANS + ';font-size:' + z.name
-      + 'px;font-weight:bold;color:' + PINK + ';line-height:' + z.nameLh
+      + 'px;font-weight:bold;color:' + PINK + ' !important;line-height:' + z.nameLh
       + 'px;padding:0 0 ' + z.nb + 'px 0;white-space:nowrap;">'
-      + '<span style="color:' + PINK + ';">' + esc(name) + '</span></td></tr>';
+      + paint(PINK, esc(name)) + '</td></tr>';
 
     if (title) {
       rows += '<tr><td style="font-family:' + BOOK + ';font-size:' + z.sub + 'px;color:' + PINK
-            + ';line-height:' + z.subLh + 'px;padding:0;">'
-            + '<span style="color:' + PINK + ';">' + esc(title) + '</span></td></tr>';
+            + ' !important;line-height:' + z.subLh + 'px;padding:0;">'
+            + paint(PINK, esc(title)) + '</td></tr>';
     }
     if (on('tRegion') && region) {
       rows += '<tr><td style="font-family:' + BOOK + ';font-size:' + z.sub + 'px;color:' + PINK
-            + ';line-height:' + z.subLh + 'px;padding:0;">'
-            + '<span style="color:' + PINK + ';">' + esc(region) + '</span></td></tr>';
+            + ' !important;line-height:' + z.subLh + 'px;padding:0;">'
+            + paint(PINK, esc(region)) + '</td></tr>';
     }
 
     var hasContact = true;
@@ -222,15 +233,15 @@
     }
     if (on('tEmail') && email) {
       rows += contactRow(z, 'mail.png', '<a href="mailto:' + esc(email)
-            + '" style="color:' + GREY + ';text-decoration:none;"><span style="color:'
-            + GREY + ';text-decoration:none;">' + esc(email) + '</span></a>');
+            + '" style="color:' + GREY + ' !important;text-decoration:none;">'
+            + paint(GREY, esc(email)) + '</a>');
     }
     if (on('tPhone') && phone) rows += contactRow(z, 'phone.png',
-      '<span style="color:' + GREY + ';">' + esc(phone) + '</span>');
+      paint(GREY, esc(phone)));
     {
       rows += contactRow(z, 'globe.png', '<a href="https://www.sawgrassink.com" style="color:'
-            + GREY + ';text-decoration:none;"><span style="color:' + GREY
-            + ';text-decoration:none;">www.sawgrassink.com</span></a>');
+            + GREY + ' !important;text-decoration:none;">'
+            + paint(GREY, 'www.sawgrassink.com') + '</a>');
     }
 
     {
